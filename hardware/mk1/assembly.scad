@@ -23,6 +23,7 @@ show_full_assembly=1;
 h_pos = (bb_length-20)/2;
 
 //tibia2();
+//femur();
 
 if (show_full_assembly==1){
 	//full assembly example
