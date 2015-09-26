@@ -10,7 +10,7 @@ module femurBody(thickness, center_to_center, width) {
 				cylinder(r = width/2, h = thickness, center = true);
 
 			// midpoint
-			translate([-7, 9, 0])
+			translate([0, 0, 0])
 				cylinder(r = width/3, h = thickness, center = true);
 
 			// end
@@ -28,13 +28,13 @@ module femur(thickness = 4, center_to_center = 40, width = 12) {
 		// tibia
 		color("red")
 			translate([center_to_center/2,0,thickness + 0.01])
-			rotate([0, 180, 71])
+			rotate([0, 180, 90])
 			servo_arm();
 
 		// hip
 		color("red")
 			translate([-center_to_center/2,0,thickness + 0.01])
-			rotate([0, 180, -55])
+			rotate([0, 180, -90])
 			servo_arm();
 	}
 }
