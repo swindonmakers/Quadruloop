@@ -3,7 +3,7 @@ include <moreShapes.scad>;
 use <backbone.scad>;
 use <hip.scad>;
 use <servo.scad>;
-use <coxa.scad>;
+include <coxa.scad>;
 include <femur.scad>;
 include <tibia.scad>;
 
