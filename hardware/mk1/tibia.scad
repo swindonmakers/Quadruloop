@@ -28,9 +28,10 @@ module tibia(sl = 23, sw = 12.5){
 	}
 }
 
-module tibia2(sl = 23, sw = 12.5){
+module tibia2(sl = 23, sw = 12.5) {
+	wheelThickness = 6;
 	or = 70;
-	ir = or - 6;
+	ir = or - wheelThickness;
 
 	difference(){
 		//solid parts
@@ -51,8 +52,21 @@ module tibia2(sl = 23, sw = 12.5){
 
 			// wheel section
 			translate([-44, ir - 20,0])
-				rotate([0,0,-80])
+			rotate([0,0,-80]) {
+
+				// section
 				sector3D(r=or, ir=ir, a=160, h=4, center = false, $fn=64);
+
+				// add rounded tips to the wheel section
+				for (i=[0,1])
+					rotate([0,0,i*160])
+					translate([or - wheelThickness/2,0,0])
+					cylinder(r=3, h=4);
+			}
+
+
+
+
 		}
 		//servo mounts
 		for (i = [ [-3,0,-2],[-31,0,-2] ]){
