@@ -13,12 +13,6 @@ bb_height = 8;
 servo_length = 23;
 servo_width = 12.5;
 
-wheel = true;  // true to show in wheel configuration, false for walking config
-
-coxa_rot_ang = wheel ? 0 : 30;
-femur_ang = wheel ? -130 : 0;
-tibia_ang = wheel ? 130 : -20;
-
 h_pos = (bb_length-20)/2;
 
 //tibia2();
@@ -30,10 +24,20 @@ finalAssembly(0, -130, 130);
 
 // walking mode
 translate([0, 300, 28])
-	finalAssembly(30, 0, -20);
+	finalAssembly(45, 0, -20);
 
 module finalAssembly(coxa_rot_angle, femur_angle, tibia_angle) {
-		//full assembly example
+
+		// battery - modelled on a zippy 850mah 2s lipo
+		color("yellow")
+			translate([-28,-15,-20])
+			cube([56,30,14]);
+
+		// APM2.5
+		color("grey")
+			translate([-33,-21,6])
+			cube([66, 42, 10]);
+
 		backbone();
 
 		for ( i = [1, -1]){
