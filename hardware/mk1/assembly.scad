@@ -15,16 +15,25 @@ servo_width = 12.5;
 
 h_pos = (bb_length-20)/2;
 
+// parts for printing
+// =============================================================================
 //tibia2();
 //femur();
 //mirror([1,0,0]) coxa();
 
-// wheel mode
-finalAssembly(0, -130, 130);
 
-// walking mode
-translate([0, 300, 28])
-	finalAssembly(45, 0, -20);
+// assemblies
+// =============================================================================
+if (false) {
+	// wheel mode
+	finalAssembly(0, -130, 130);
+
+	// walking mode
+	translate([0, 300, 28])
+		finalAssembly(45, 0, -20);
+}
+
+// =============================================================================
 
 module finalAssembly(coxa_rot_angle, femur_angle, tibia_angle) {
 
