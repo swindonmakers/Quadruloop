@@ -52,7 +52,7 @@ module tibia2(sl = 23, sw = 12.5){
 			// wheel section
 			translate([-44, ir - 20,0])
 				rotate([0,0,-80])
-				sector3D(r=or, ir=ir, a=160, h=4, center = false);
+				sector3D(r=or, ir=ir, a=160, h=4, center = false, $fn=64);
 		}
 		//servo mounts
 		for (i = [ [-3,0,-2],[-31,0,-2] ]){

@@ -4,7 +4,7 @@ use <backbone.scad>;
 use <hip.scad>;
 use <servo.scad>;
 use <coxa.scad>;
-use <femur.scad>;
+include <femur.scad>;
 include <tibia.scad>;
 
 bb_length=90;
@@ -13,16 +13,16 @@ bb_height = 8;
 servo_length = 23;
 servo_width = 12.5;
 
-wheel = false;
+wheel = true;  // true to show in wheel configuration, false for walking config
 
 coxa_rot_angle = wheel ? 0 : 30;
 femur_angle = wheel ? -130 : 0;
 tibia_angle = wheel ? 130 : -20;
 
-show_full_assembly=0;
+show_full_assembly=1;
 h_pos = (bb_length-20)/2;
 
-tibia2();
+//tibia2();
 
 if (show_full_assembly==1){
 	//full assembly example

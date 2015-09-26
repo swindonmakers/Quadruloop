@@ -417,6 +417,16 @@ module minSupportBeamY(size=[0,0,0], bridge=5, air=0, center=false) {
 }
 
 
+// hull children in pairs
+module hullInPairs() {
+	for (i=[0:$children-2])
+		hull() {
+			children(i);
+			children(i+1);
+		}
+}
+
+
 /* ****************************
 
 	Visualisation Utilities
