@@ -24,7 +24,7 @@ h_pos = (bb_length-20)/2;
 
 // assemblies
 // =============================================================================
-if (false) {
+if (true) {
 	// wheel mode
 	finalAssembly(0, -130, 130);
 

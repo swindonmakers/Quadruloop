@@ -53,7 +53,7 @@ module coxa(servo_height = 29, servo_clearance = 7) {
 					cube([15, fork_height, 6], center = true);
 					translate([-1, 0, 0]) cube([12.5, 23.5, 7], center = true);
 					for(i = [-1, 1]) {
-						translate([-1, i * 30/2, 0]) cylinder(r=1, h=20, center = true);
+						translate([-1, i * 28/2, 0]) cylinder(r=1, h=20, center = true);
 					}
 				}
 			}
