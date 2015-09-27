@@ -1,17 +1,17 @@
-/*************************************************** 
+/***************************************************
   This is a library for our Adafruit 16-channel PWM & Servo driver
 
   Pick one up today in the adafruit shop!
   ------> http://www.adafruit.com/products/815
 
-  These displays use I2C to communicate, 2 pins are required to  
+  These displays use I2C to communicate, 2 pins are required to
   interface. For Arduino UNOs, thats SCL -> Analog 5, SDA -> Analog 4
 
-  Adafruit invests time and resources providing this open source code, 
-  please support Adafruit and open-source hardware by purchasing 
+  Adafruit invests time and resources providing this open source code,
+  please support Adafruit and open-source hardware by purchasing
   products from Adafruit!
 
-  Written by Limor Fried/Ladyada for Adafruit Industries.  
+  Written by Limor Fried/Ladyada for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ****************************************************/
 
@@ -20,6 +20,8 @@
 #if defined(__AVR__)
  #define WIRE Wire
 #elif defined(CORE_TEENSY) // Teensy boards
+ #define WIRE Wire
+#elif defined(ESP8266_PERI_H_INCLUDED) // ESP8266
  #define WIRE Wire
 #else // Arduino Due
  #define WIRE Wire1
@@ -57,7 +59,7 @@ void Adafruit_PWMServoDriver::setPWMFreq(float freq) {
   if (ENABLE_DEBUG_OUTPUT) {
     Serial.print("Final pre-scale: "); Serial.println(prescale);
   }
-  
+
   uint8_t oldmode = read8(PCA9685_MODE1);
   uint8_t newmode = (oldmode&0x7F) | 0x10; // sleep
   write8(PCA9685_MODE1, newmode); // go to sleep
