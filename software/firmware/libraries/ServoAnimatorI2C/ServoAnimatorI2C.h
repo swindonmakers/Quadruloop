@@ -34,6 +34,10 @@ private:
 
     uint8_t _numServos;
     SERVO *_servos; // array of servo structures
+    Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();  // pwm driver board interface
+
+    uint16_t _minPulseLen = 150;  // 0 degrees, in range 0..4096
+    uint16_t _maxPulseLen = 600;  // 180 degrees, in range 0..4096
 
     // how long to take in ms to get to targetPos from startPos
     unsigned long _moveDuration = 250;
@@ -54,6 +58,7 @@ private:
 public:
 
     ServoAnimatorI2C (uint8_t numServos);
+    void begin();
     void initServo(uint8_t num, uint8_t pin, uint8_t center);
     void setServoCenter(uint8_t num, uint8_t center);
 

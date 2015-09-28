@@ -5,6 +5,11 @@ ServoAnimatorI2C::ServoAnimatorI2C(uint8_t numServos) {
     _servos = new SERVO[_numServos];
 }
 
+void ServoAnimatorI2C::begin() {
+    pwm.begin();
+    pwm.setPWMFreq(60);  // 60 Hz updates
+}
+
 void ServoAnimatorI2C::initServo(uint8_t num, uint8_t pin, uint8_t center) {
     if (num >= _numServos) return;
     SERVO *s = &_servos[num];
@@ -15,9 +20,8 @@ void ServoAnimatorI2C::initServo(uint8_t num, uint8_t pin, uint8_t center) {
     s->targetPos = center;
     s->startPos = center;
 
-    //s->servo = new Servo();
-    //s->servo->attach(pin);
-    //s->servo->write(center);
+    // center servo
+    pwm.setPWM(s->pin, 0, map(s->pos, 0, 180, _minPulseLen, _maxPulseLen));
 }
 
 void ServoAnimatorI2C::setServoCenter(uint8_t num, uint8_t center) {
@@ -87,7 +91,7 @@ void ServoAnimatorI2C::update() {
     _servos[i].pos = _servos[i].startPos + t*(_servos[i].targetPos - _servos[i].startPos);
 
     // update servos
-    //_servos[i].servo->write(_servos[i].pos);
+    pwm.setPWM(_servos[i].pin, 0, map(_servos[i].pos, 0, 180, _minPulseLen, _maxPulseLen));
   }
 
   // see if we're done with the current move
