@@ -17,7 +17,7 @@ struct ANIMATION {
     char cmd[3];
     uint8_t cmdType;
     uint8_t numFrames;
-    byte *frames;
+    int *frames;
     unsigned long *durations;
 };
 
@@ -26,10 +26,11 @@ class ServoAnimatorI2C {
 private:
     struct SERVO {
         uint8_t pin;
-        uint8_t center;
-        uint8_t startPos;
-        uint8_t targetPos;
-        uint8_t pos;
+        int center;
+        boolean reverse;
+        int startPos;
+        int targetPos;
+        int pos;
     };
 
     uint8_t _numServos;
@@ -59,10 +60,10 @@ public:
 
     ServoAnimatorI2C (uint8_t numServos);
     void begin();
-    void initServo(uint8_t num, uint8_t pin, uint8_t center);
+    void initServo(uint8_t num, uint8_t pin, uint8_t center, boolean reverse = false);
     void setServoCenter(uint8_t num, uint8_t center);
 
-    void moveServosTo(const byte keyframe[], unsigned long dur);
+    void moveServosTo(const int keyframe[], unsigned long dur);
     void setAnimation(ANIMATION& animation, boolean reverse = false);
     void setRepeatCount(uint8_t repeatCount);
     void setSpeed(float speed);

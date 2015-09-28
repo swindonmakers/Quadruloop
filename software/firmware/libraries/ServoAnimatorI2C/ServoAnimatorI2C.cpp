@@ -10,12 +10,13 @@ void ServoAnimatorI2C::begin() {
     pwm.setPWMFreq(60);  // 60 Hz updates
 }
 
-void ServoAnimatorI2C::initServo(uint8_t num, uint8_t pin, uint8_t center) {
+void ServoAnimatorI2C::initServo(uint8_t num, uint8_t pin, uint8_t center, boolean reverse) {
     if (num >= _numServos) return;
     SERVO *s = &_servos[num];
 
     s->pin = pin;
     s->center = center;
+    s->reverse = reverse;
     s->pos = center;
     s->targetPos = center;
     s->startPos = center;
@@ -30,22 +31,22 @@ void ServoAnimatorI2C::setServoCenter(uint8_t num, uint8_t center) {
     s->center = center;
 }
 
-void ServoAnimatorI2C::moveServosTo(const byte keyframe[], unsigned long dur) {
+void ServoAnimatorI2C::moveServosTo(const int keyframe[], unsigned long dur) {
    if (_busy) return;
 
    _moveStartedAt = millis();
    _busy = true;
    _moveDuration = dur * (1.0/_speed);
    for (uint8_t i=0; i<_numServos; i++) {
-       _servos[i].targetPos = _servos[i].center + keyframe[i];
+       _servos[i].targetPos = (int)_servos[i].center + (_servos[i].reverse ? -keyframe[i] : keyframe[i]);
 
-       /*
+       
        Serial.print(i);
        Serial.print(':');
        Serial.print(keyframe[i]);
        Serial.print(',');
        Serial.println(_servos[i].targetPos);
-       */
+
    }
 
 }

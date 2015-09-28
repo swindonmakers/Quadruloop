@@ -11,22 +11,27 @@
 ServoAnimatorI2C anim(NUM_JOINTS);
 CommandQueue cmdQ(COMMAND_QUEUE_LENGTH);
 
+uint8_t mode = MODE_TEST;
+unsigned long pauseUntil = 0;
+
 String cmd;  // cmd received over serial - builds up char at a time
 
+COMMAND tempCmd;
+
 void setup() {
+  Serial.begin(9600);
+  Serial.println("Quadruloop");
+
   QuadruloopEEPROM::loadConfig(NUM_JOINTS, servoCenters);
 
   anim.begin();
 
   // init servos
   for (uint8_t i=0; i<NUM_JOINTS; i++) {
-      anim.initServo(i, i, servoCenters[i]);
+      anim.initServo(i, i, servoCenters[i], servoReverse[i]);
   }
 
   anim.setAnimation(stand);
-
-  Serial.begin(9600);
-  Serial.println("Quadruloop");
 }
 
 void loop() {
@@ -36,6 +41,8 @@ void loop() {
         char c = toupper(Serial.read());
         if (c == '\r' || c == '\n') {  // if found a line end
             if (cmd != "") {  // check the command isn't blank
+                mode = MODE_INTERACTIVE;
+
                 if (cmdQ.isFull()) {
                     Serial.println("BUSY");
                 } else {
@@ -53,8 +60,19 @@ void loop() {
 
     anim.update();
 
-    if (!anim.isBusy()) {
+    if (!anim.isBusy() && millis() > pauseUntil) {
+
+        // do stuff in the queue regardless of mode
         if (!cmdQ.isEmpty()) doCommand(cmdQ.dequeue());
+
+        switch(mode){
+          case MODE_INTERACTIVE:
+            break;
+
+          case MODE_TEST:
+            doTest();
+            break;
+      }
     }
 }
 
@@ -76,6 +94,8 @@ static void parseCommand(String c) {
 
     if (cmdType != 0xff) {
       // already matches an animation
+    } else if (c.startsWith("PF")) {
+        cmdType = CMD_PF;
     } else if (c.startsWith("SV")) {
         cmdType = CMD_SV;
     } else if (c.startsWith("SC")) {
@@ -134,7 +154,7 @@ static void doCommand(COMMAND *c)
     switch(c->cmdType) {
         case CMD_POS:
             if (f1 < 0 || f1 > NUM_JOINTS-1) break;
-            interactiveKeyFrames[0][(uint8_t)f1] = (byte)f2;
+            interactiveKeyFrames[0][(uint8_t)f1] = (int)f2;
             updateInteractivePositions();
             break;
         case CMD_SV:
@@ -154,6 +174,9 @@ static void doCommand(COMMAND *c)
               anim.setAnimation(stand);
             }
             break;
+        case CMD_PF:
+            pauseUntil = millis() + (f1*1000);
+            break;
     }
 }
 
@@ -166,4 +189,13 @@ void updateInteractivePositions() {
         Serial.print(interactiveKeyFrames[0][i]);
     }
     Serial.println();
+}
+
+void doTest() {
+  if (cmdQ.isEmpty()) {
+      parseCommand("WH");
+      parseCommand("PF 2");
+      parseCommand("ST");
+      parseCommand("PF 2");
+  }
 }
