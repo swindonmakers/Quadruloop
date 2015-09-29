@@ -1,4 +1,4 @@
-#define NUM_JOINTS 6
+#define NUM_JOINTS 12
 
 #define COMMAND_QUEUE_LENGTH 8
 
@@ -13,14 +13,27 @@ Servo wiring
 4 - back left coxa
 5 - back left tibia
 
+6 - front right hip
+7 - front right coxa
+8 - front right tibia
+
+9 - back right hip
+10 - back right coxa
+11 - back right tibia
+
 */
 
 
 // default centers - will be overwritten from EEPROM once calibrated
-uint8_t servoCenters[NUM_JOINTS] = {90,90,90,90,90,90};
+uint8_t servoCenters[NUM_JOINTS] = {90,90,90, 90,90,90, 90,90,90, 90,90,90};
 
 
-boolean servoReverse[NUM_JOINTS] = {false, false, true, true, true, false};
+boolean servoReverse[NUM_JOINTS] = {
+  false, false, true, 
+  true, true, false, 
+  true, true, false, 
+  false, false, true
+};
 
 // Commands
 

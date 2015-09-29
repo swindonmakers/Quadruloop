@@ -37,16 +37,17 @@ void ServoAnimatorI2C::moveServosTo(const int keyframe[], unsigned long dur) {
    _moveStartedAt = millis();
    _busy = true;
    _moveDuration = dur * (1.0/_speed);
+   _updateCount = 0;
    for (uint8_t i=0; i<_numServos; i++) {
        _servos[i].targetPos = (int)_servos[i].center + (_servos[i].reverse ? -keyframe[i] : keyframe[i]);
 
-       
+       /*
        Serial.print(i);
        Serial.print(':');
        Serial.print(keyframe[i]);
        Serial.print(',');
        Serial.println(_servos[i].targetPos);
-
+       */
    }
 
 }
@@ -74,6 +75,8 @@ boolean ServoAnimatorI2C::isBusy() {
 void ServoAnimatorI2C::update() {
   if (!_busy || _moveDuration == 0) return; // nothing to do
 
+  _updateCount++;
+
   // calc elapsed time
   float t = millis() - _moveStartedAt;
   if (t < 0) // overflow
@@ -100,6 +103,9 @@ void ServoAnimatorI2C::update() {
     _busy = false;
     for (uint8_t i=0; i<_numServos; i++)
       _servos[i].startPos = _servos[i].pos;
+
+    Serial.print("Updates: ");
+    Serial.println(_updateCount);
 
     // play next keyFrame?
     nextFrame();

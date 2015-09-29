@@ -55,6 +55,7 @@ private:
     uint8_t _repeatCount = 0;
     boolean _reverse = false; // set to true to reverse animation
     float _speed = 1.0;  // multiplier applied to animation timings
+    unsigned long _updateCount = 0;
 
 public:
 

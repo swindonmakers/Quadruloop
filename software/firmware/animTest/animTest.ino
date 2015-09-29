@@ -11,7 +11,7 @@
 ServoAnimatorI2C anim(NUM_JOINTS);
 CommandQueue cmdQ(COMMAND_QUEUE_LENGTH);
 
-uint8_t mode = MODE_TEST;
+uint8_t mode = MODE_INTERACTIVE;
 unsigned long pauseUntil = 0;
 
 String cmd;  // cmd received over serial - builds up char at a time
@@ -102,6 +102,8 @@ static void parseCommand(String c) {
         cmdType = CMD_SC;
     } else if (c.startsWith("POS")) {
         cmdType = CMD_POS;
+    } else if (c.startsWith("TEST")) {
+        mode = MODE_TEST;
     }
 
     // give up if command not recognised
@@ -171,7 +173,8 @@ static void doCommand(COMMAND *c)
             } else {
               servoCenters[(uint8_t)f1] = (uint8_t)f2;
               anim.setServoCenter((uint8_t)f1, (uint8_t)f2);
-              anim.setAnimation(stand);
+              updateInteractivePositions();
+              //anim.setAnimation(stand);
             }
             break;
         case CMD_PF:

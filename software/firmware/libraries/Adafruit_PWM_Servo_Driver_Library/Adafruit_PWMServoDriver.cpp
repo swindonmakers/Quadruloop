@@ -36,6 +36,9 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(uint8_t addr) {
 
 void Adafruit_PWMServoDriver::begin(void) {
  WIRE.begin();
+ // save I2C bitrate
+ uint8_t twbrbackup = TWBR;
+ TWBR = 12; // upgrade to 400KHz!
  reset();
 }
 
