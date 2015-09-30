@@ -161,8 +161,9 @@ static void doCommand(COMMAND *c)
     // Handle all the other commands that can't be dealt with by the "auto" process
     switch(c->cmdType) {
         case CMD_POS:
-            if (f1 < 0 || f1 > NUM_JOINTS-1) break;
-            interactiveKeyFrames[0][(uint8_t)f1] = (int)f2;
+            if (f1 >= 0 && f1 <= NUM_JOINTS-1) {
+                interactiveKeyFrames[0][(uint8_t)f1] = (int)f2;
+            }
             updateInteractivePositions();
             break;
         case CMD_SV:
