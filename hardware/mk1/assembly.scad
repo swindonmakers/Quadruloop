@@ -7,7 +7,7 @@ include <coxa.scad>;
 include <femur.scad>;
 include <tibia.scad>;
 
-bb_length=90;
+bb_length=110;
 bb_height = 8;
 
 servo_length = 23;
@@ -25,7 +25,7 @@ h_pos = (bb_length-20)/2;
 
 // assemblies
 // =============================================================================
-if (false) {
+if (true) {
 	// wheel mode
 	finalAssembly(0, -130, 130);
 
@@ -33,8 +33,6 @@ if (false) {
 	translate([0, 300, 28])
 		finalAssembly(45, 0, -20);
 }
-
-finalAssembly(0, -130 + 00, 130);
 
 // =============================================================================
 
@@ -52,8 +50,7 @@ module finalAssembly(coxa_rot_angle, femur_angle, tibia_angle) {
 
 		backbone();
 
-		//for ( i = [1, -1]){
-		for ( i = [1]){
+		for ( i = [1, -1]){
 			translate([0,i*h_pos,(bb_height/2)])
 				hip(servo_length,servo_width);
 

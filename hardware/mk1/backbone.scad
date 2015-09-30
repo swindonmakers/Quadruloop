@@ -1,8 +1,8 @@
 //backbone(90,14,8,23,12.5);
 //backbone();
 
-module backbone(bl = 90,bw = 14,bh = 8,sl = 23,sw = 12.5){
-	h_pos = ((bl-20) / 2);		
+module backbone(bl = 110,bw = 14,bh = 8,sl = 23,sw = 12.5){
+	h_pos = ((bl-20) / 2);
 	difference(){
 		// main
 		translate([-(bw/2),-(bl/2),-(bh/2)]) color("purple") cube([bw,bl,bh]);
@@ -10,7 +10,7 @@ module backbone(bl = 90,bw = 14,bh = 8,sl = 23,sw = 12.5){
 		//servo body cutouts
 		for (i = [[-16.5,h_pos,0],[16.5,h_pos,0],[-16.5,-h_pos,0],[16.5,-h_pos,0]]){
 			translate(i) cube([sl,sw,bh], center=true);
-		}		
+		}
 
 		//servo mount holes
 		for (i = [[2.5,h_pos,-10],[-2.5,h_pos,-10],[-2.5,-h_pos,-10],[2.5,-h_pos,-10]]){
