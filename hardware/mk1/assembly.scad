@@ -25,7 +25,7 @@ h_pos = (bb_length-20)/2;
 
 // assemblies
 // =============================================================================
-if (true) {
+if (false) {
 	// wheel mode
 	finalAssembly(0, -130, 130);
 
@@ -33,6 +33,8 @@ if (true) {
 	translate([0, 300, 28])
 		finalAssembly(45, 0, -20);
 }
+
+finalAssembly(0, -130 + 00, 130);
 
 // =============================================================================
 
@@ -50,7 +52,8 @@ module finalAssembly(coxa_rot_angle, femur_angle, tibia_angle) {
 
 		backbone();
 
-		for ( i = [1, -1]){
+		//for ( i = [1, -1]){
+		for ( i = [1]){
 			translate([0,i*h_pos,(bb_height/2)])
 				hip(servo_length,servo_width);
 
@@ -62,9 +65,9 @@ module finalAssembly(coxa_rot_angle, femur_angle, tibia_angle) {
 						scale([j*1,1,i*-1]) coxa();
 						translate([j*26.5,6,0]) rotate([0,90 + i*90,0]) {
 							color("blue") servo();
-							translate([0,0,11]) scale([j*i,1,1]) rotate([0,0,180 + femur_angle]) {
+							translate([0,0,12]) scale([j*i,1,1]) rotate([0,0,180 + femur_angle]) {
 								femur();
-								translate([40, 0, -11]) rotate([0, 0, 90 + tibia_angle]) {
+								translate([40, 0, -12]) rotate([0, 0, 90 + tibia_angle]) {
 									color("blue") servo();
 									translate([0, -22, -4]) rotate([0, 0, -90]) tibia2();
 								}

@@ -3,20 +3,41 @@
 include <servo_arm.scad>;
 
 module femurBody(thickness, center_to_center, width) {
-	translate([0,0,thickness/2])
-		hullInPairs() {
-			// end
-			translate([center_to_center/2, 0, 0])
-				cylinder(r = width/2, h = thickness, center = true);
 
-			// midpoint
-			translate([0, 0, 0])
-				cylinder(r = width/3, h = thickness, center = true);
+	sp = 30;
 
-			// end
-			translate([-center_to_center/2, 0, 0])
-				cylinder(r = width/2, h = thickness, center = true);
-		}
+	difference() {
+		for (z=[-sp-2.5, 0])
+			translate([0,0,thickness/2 + z])
+				hullInPairs() {
+					// end
+					translate([center_to_center/2, 0, 0])
+						cylinder(r = width/2, h = thickness, center = true);
+
+					// midpoint
+					translate([0, 0, 0])
+						cylinder(r = width/2, h = thickness, center = true);
+
+					// end
+					translate([-center_to_center/2, 0, 0])
+						cylinder(r = width/2, h = thickness, center = true);
+				}
+
+		// holes for screws in back of servos
+		for (i=[-1,1])
+			translate([i * center_to_center/2, 0, 0])
+			cylinder(r = 1, h = 100, center = true, $fn=12);
+	}
+
+
+	// cross beam
+	hull() {
+		translate([5, -width/2, -sp])
+			cube([2,1,sp+1]);
+
+		translate([-4, width/2 - 1, -sp])
+			cube([2,1,sp+1]);
+	}
 }
 
 
