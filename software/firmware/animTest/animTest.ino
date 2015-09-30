@@ -13,6 +13,7 @@ CommandQueue cmdQ(COMMAND_QUEUE_LENGTH);
 
 uint8_t mode = MODE_INTERACTIVE;
 unsigned long pauseUntil = 0;
+unsigned long updateAfter = 0;
 
 String cmd;  // cmd received over serial - builds up char at a time
 
@@ -58,9 +59,14 @@ void loop() {
         }
     }
 
-    anim.update();
+    unsigned long now = millis();
 
-    if (!anim.isBusy() && millis() > pauseUntil) {
+    if (now > updateAfter) {
+        anim.update();
+        updateAfter = now + (1000 / 50);  // 50 hz
+    }
+
+    if (!anim.isBusy() && now > pauseUntil) {
 
         // do stuff in the queue regardless of mode
         if (!cmdQ.isEmpty()) doCommand(cmdQ.dequeue());
