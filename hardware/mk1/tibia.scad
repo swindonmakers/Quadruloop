@@ -28,10 +28,12 @@ module tibia(sl = 23, sw = 12.5){
 	}
 }
 
+// rounded tibia for rolling on :)
 module tibia2(sl = 23, sw = 12.5) {
 	wheelThickness = 6;
 	or = 70;
 	ir = or - wheelThickness;
+	flangeW = 12;
 
 	difference(){
 		//solid parts
@@ -51,18 +53,25 @@ module tibia2(sl = 23, sw = 12.5) {
 			}
 
 			// wheel section
-			translate([-44, ir - 20,0])
-			rotate([0,0,-80]) {
+			translate([-44, ir - 20,0]) {
+				// main section
+				rotate([0,0,-80]) {
 
-				// section
-				sector3D(r=or, ir=ir, a=160, h=4, center = false, $fn=64);
+					// section
+					sector3D(r=or, ir=ir, a=160, h=4, center = false, $fn=64);
 
-				// add rounded tips to the wheel section
-				for (i=[0,1])
-					rotate([0,0,i*160])
-					translate([or - wheelThickness/2,0,0])
-					cylinder(r=3, h=4);
+					//flange
+					sector3D(r=or, ir=or-1, a=155, h=flangeW, center = false, $fn=64);
+
+					// add rounded tips to the wheel section
+					for (i=[0,1])
+						rotate([0,0,i*160])
+						translate([or - wheelThickness/2,0,0])
+						cylinder(r=3, h=4);
+				}
+
 			}
+
 
 
 
