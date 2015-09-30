@@ -31,6 +31,14 @@ void ServoAnimatorI2C::setServoCenter(uint8_t num, uint8_t center) {
     s->center = center;
 }
 
+int ServoAnimatorI2C::getServoPos(uint8_t num, boolean relative) {
+    if (num >= _numServos) return 0;
+    if (relative)
+        return (_servos[num].pos - _servos[num].center) * (_servos[num].reverse ? -1 : 1);
+    else
+        return _servos[num].pos;
+}
+
 void ServoAnimatorI2C::moveServosTo(const int keyframe[], unsigned long dur) {
    if (_busy) return;
 

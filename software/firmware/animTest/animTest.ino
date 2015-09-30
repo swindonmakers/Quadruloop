@@ -63,7 +63,7 @@ void loop() {
 
     if (now > updateAfter) {
         anim.update();
-        updateAfter = now + (1000 / 50);  // 50 hz
+        updateAfter = now + (1000 / 100);  // 50 hz
     }
 
     if (!anim.isBusy() && now > pauseUntil) {
@@ -108,6 +108,8 @@ static void parseCommand(String c) {
         cmdType = CMD_SC;
     } else if (c.startsWith("POS")) {
         cmdType = CMD_POS;
+    } else if (c.startsWith("CP")) {
+        cmdType = CMD_CP;
     } else if (c.startsWith("TEST")) {
         mode = MODE_TEST;
     }
@@ -186,6 +188,10 @@ static void doCommand(COMMAND *c)
             break;
         case CMD_PF:
             pauseUntil = millis() + (f1*1000);
+            break;
+        case CMD_CP:
+            for (uint8_t i = 0; i < NUM_JOINTS; i++) 
+                interactiveKeyFrames[0][i] = anim.getServoPos(i, true);
             break;
     }
 }

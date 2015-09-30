@@ -20,7 +20,7 @@ ANIMATION stand {
      0,85,-20,
      0,85,-20}
   },
-  new unsigned long[1]{2000}
+  new unsigned long[1]{1000}
 };
 
 ANIMATION wheel {
@@ -30,7 +30,7 @@ ANIMATION wheel {
   (int *)new int[1][NUM_JOINTS] {
     {0,-32,120,0,-38,120, 0,-32,120,0,-38,120}
   },
-  new unsigned long[1]{2000}
+  new unsigned long[1]{1000}
 };
 
 

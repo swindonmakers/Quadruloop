@@ -48,6 +48,7 @@ boolean servoReverse[NUM_JOINTS] = {
 #define CMD_SV 23  // save config
 #define CMD_SC 24 // servo center - set servo x center to y (abs)
 #define CMD_PF 25 // pause for x seconds
+#define CMD_CP 26 // copy current position into interactive animation keyframe
 
 
 // Modes

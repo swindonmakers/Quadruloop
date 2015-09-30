@@ -63,6 +63,7 @@ public:
     void begin();
     void initServo(uint8_t num, uint8_t pin, uint8_t center, boolean reverse = false);
     void setServoCenter(uint8_t num, uint8_t center);
+    int getServoPos(uint8_t num, boolean relative);
 
     void moveServosTo(const int keyframe[], unsigned long dur);
     void setAnimation(ANIMATION& animation, boolean reverse = false);
