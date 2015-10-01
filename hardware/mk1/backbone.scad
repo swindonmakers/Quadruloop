@@ -26,3 +26,11 @@ module backbone(bl = 110,bw = 14,bh = 8,sl = 23,sw = 12.5){
 		translate([0,0,-4]) cylinder(r=3,h=10,$fn=32);
 	}
 }
+
+
+module hexapodBackbone() {
+	for (i=[0,1])
+		mirror([0,i,0])
+		translate([0,110/2 - 16.5 + 13/2,0])
+		backbone(bl = 110,bw = 14,bh = 8,sl = 23,sw = 12.5);
+}
