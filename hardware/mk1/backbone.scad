@@ -19,10 +19,10 @@ module backbone(bl = 110,bw = 14,bh = 8,sl = 23,sw = 12.5){
 
 		//round side indents
 		for (i = [[34,17,-5],[34,-17,-5],[-34,17,-5],[-34,-17,-5]]) {
-			translate(i) cylinder(r=30,h=10,$fn=200);
+			translate(i) cylinder(r=30,h=10,$fn=64);
 		}
 
 		//center hole
-		translate([0,0,-4]) cylinder(r=3,h=10,$fn=200);
+		translate([0,0,-4]) cylinder(r=3,h=10,$fn=32);
 	}
 }
