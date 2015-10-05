@@ -15,7 +15,7 @@ servo_width = 12.5;
 
 h_pos = (bb_length-20)/2;
 
-hexapod = true;
+hexapod = false;
 
 // parts for printing
 // =============================================================================

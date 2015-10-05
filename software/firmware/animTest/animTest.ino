@@ -29,7 +29,7 @@ void setup() {
 
   // init servos
   for (uint8_t i=0; i<NUM_JOINTS; i++) {
-      anim.initServo(i, i, servoCenters[i], servoReverse[i]);
+      anim.initServo(i, servoNumbers[i], servoCenters[i], servoReverse[i]);
   }
 
   anim.setAnimation(stand);

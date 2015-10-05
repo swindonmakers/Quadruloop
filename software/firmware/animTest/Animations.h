@@ -33,5 +33,20 @@ ANIMATION wheel {
   new unsigned long[1]{1000}
 };
 
+// flex each leg in turn
+ANIMATION legTest {
+  "LG",
+  CMD_LG,
+  5,
+  (int *)new int[5][NUM_JOINTS] {
+    {10,10,10,  0,0,0,  0,0,0,  0,0,0},
+    {0,0,0,  10,10,10,  0,0,0,  0,0,0},
+    {0,0,0,  0,0,0,  10,10,10,  0,0,0},
+    {0,0,0,  0,0,0,  0,0,0,  10,10,10},
+    {0,0,0,  0,0,0,  0,0,0,  0,0,0}
+  },
+  new unsigned long[5]{1000,1000,1000,1000,1000}
+};
 
-ANIMATION anims[MAX_ANIM_CMD] = { stand, wheel };
+
+ANIMATION anims[MAX_ANIM_CMD] = { stand, wheel, legTest };
