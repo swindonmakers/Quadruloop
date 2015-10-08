@@ -60,7 +60,7 @@ private:
 public:
 
     ServoAnimatorI2C (uint8_t numServos);
-    void begin();
+    void begin(uint8_t SDAPin = 0, uint8_t SCLPin = 1);
     void initServo(uint8_t num, uint8_t pin, uint8_t center, boolean reverse = false);
     void setServoCenter(uint8_t num, uint8_t center);
     int getServoPos(uint8_t num, boolean relative);

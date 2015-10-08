@@ -5,8 +5,8 @@ ServoAnimatorI2C::ServoAnimatorI2C(uint8_t numServos) {
     _servos = new SERVO[_numServos];
 }
 
-void ServoAnimatorI2C::begin() {
-    pwm.begin();
+void ServoAnimatorI2C::begin(uint8_t SDAPin, uint8_t SCLPin) {
+    pwm.begin(SDAPin, SCLPin);
     pwm.setPWMFreq(60);  // 60 Hz updates
 }
 

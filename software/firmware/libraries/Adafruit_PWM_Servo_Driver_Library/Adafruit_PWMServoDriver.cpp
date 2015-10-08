@@ -34,8 +34,12 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(uint8_t addr) {
   _i2caddr = addr;
 }
 
-void Adafruit_PWMServoDriver::begin(void) {
+void Adafruit_PWMServoDriver::begin(uint8_t SDAPin, uint8_t SCLPin) {
+#if defined(ESP8266_PERI_H_INCLUDED)
+ WIRE.begin(SDAPin, SCLPin);
+#else
  WIRE.begin();
+#endif
  // save I2C bitrate
  uint8_t twbrbackup = TWBR;
  TWBR = 12; // upgrade to 400KHz!
