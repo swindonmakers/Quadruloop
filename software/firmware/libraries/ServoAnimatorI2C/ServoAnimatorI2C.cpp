@@ -5,7 +5,7 @@ ServoAnimatorI2C::ServoAnimatorI2C(uint8_t numServos) {
     _servos = new SERVO[_numServos];
 }
 
-void ServoAnimatorI2C::begin(uint8_t SDAPin, uint8_t SCLPin) {
+void ServoAnimatorI2C::begin(int SDAPin, int SCLPin) {
     pwm.begin(SDAPin, SCLPin);
     pwm.setPWMFreq(60);  // 60 Hz updates
 }
@@ -112,8 +112,13 @@ void ServoAnimatorI2C::update() {
     for (uint8_t i=0; i<_numServos; i++)
       _servos[i].startPos = _servos[i].pos;
 
+    Serial.print("Frame ");
+    Serial.print(_animFrame);
+    Serial.println(" Done");
+    /*
     Serial.print("Updates: ");
     Serial.println(_updateCount);
+    */
 
     // play next keyFrame?
     nextFrame();

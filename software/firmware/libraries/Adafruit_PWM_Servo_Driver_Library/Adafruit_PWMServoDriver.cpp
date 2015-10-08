@@ -34,9 +34,16 @@ Adafruit_PWMServoDriver::Adafruit_PWMServoDriver(uint8_t addr) {
   _i2caddr = addr;
 }
 
-void Adafruit_PWMServoDriver::begin(uint8_t SDAPin, uint8_t SCLPin) {
+void Adafruit_PWMServoDriver::begin(int SDAPin, int SCLPin) {
 #if defined(ESP8266_PERI_H_INCLUDED)
+/*
+ Serial.print("I2C on ");
+ Serial.print(SDAPin);
+ Serial.print(',');
+ Serial.println(SCLPin);
+*/
  WIRE.begin(SDAPin, SCLPin);
+ WIRE.setClock(400000UL);
 #else
  WIRE.begin();
  // save I2C bitrate
@@ -48,6 +55,7 @@ void Adafruit_PWMServoDriver::begin(uint8_t SDAPin, uint8_t SCLPin) {
 
 
 void Adafruit_PWMServoDriver::reset(void) {
+ //Serial.println("PWM_Reset");
  write8(PCA9685_MODE1, 0x0);
 }
 

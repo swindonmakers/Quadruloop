@@ -25,7 +25,7 @@ void setup() {
 
   QuadruloopEEPROM::loadConfig(NUM_JOINTS, servoCenters);
 
-  anim.begin(7,8);
+  anim.begin(4,5);
 
   // init servos
   for (uint8_t i=0; i<NUM_JOINTS; i++) {
@@ -33,6 +33,8 @@ void setup() {
   }
 
   anim.setAnimation(stand);
+
+  Serial.println(">");
 }
 
 void loop() {
