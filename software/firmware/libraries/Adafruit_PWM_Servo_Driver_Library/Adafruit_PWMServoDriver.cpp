@@ -39,10 +39,10 @@ void Adafruit_PWMServoDriver::begin(uint8_t SDAPin, uint8_t SCLPin) {
  WIRE.begin(SDAPin, SCLPin);
 #else
  WIRE.begin();
-#endif
  // save I2C bitrate
  uint8_t twbrbackup = TWBR;
  TWBR = 12; // upgrade to 400KHz!
+#endif
  reset();
 }
 
