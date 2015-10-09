@@ -34,6 +34,8 @@ namespace QuadruloopEEPROM
 		for (uint8_t i = 0; i < n; i++) {
 			EEPROM.write(EEPROM_CENTERS_ADDR + i, centers[i]);
 		}
+
+		EEPROM.commit();
 #else
 		// update magic
 		EEPROM.update(EEPROM_MAGIC_ADDR, EEPROM_MAGIC);

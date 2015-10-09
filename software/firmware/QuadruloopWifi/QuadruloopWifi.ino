@@ -58,23 +58,13 @@ void setup() {
     WiFi.softAP(WIFI_SSID, WIFI_PWD);
 
   /* Setup http server */
-  server.onNotFound(handleNotFound);
-
-  server.begin();
+  setupWebServer();
 
   Serial.println(">");
 }
 
 void loop() {
-
     server.handleClient();
-
-    // write IP address when connected!
-    if (WiFi.status() == WL_CONNECTED && (uint32_t)localIP == 0) {
-    localIP = WiFi.localIP();
-    Serial.print("WT ");
-    Serial.println(WiFi.localIP());
-    }
 
     // Parse Logo commands from Serial
     if (Serial.available()) {
