@@ -1,29 +1,53 @@
 #include "IKUtils.h"
 #include <SpeedTrig.h>
 
-/* Body IK solver: compute where legs should be. */
+void prepBodyIK(IK_BODY_POS *bodyPos) {
+    bodyPos->cosB = SpeedTrig.cos(bodyPos->rotX);
+    bodyPos->sinB = SpeedTrig.sin(bodyPos->rotX);
+    bodyPos->cosG = SpeedTrig.cos(bodyPos->rotY);
+    bodyPos->sinG = SpeedTrig.sin(bodyPos->rotY);
+}
+
+// find the translation of the coxa point, given our rotations
 IK_LEG_REQ bodyIK(int X, int Y, int Z, int Xdisp, int Ydisp, float Zrot, IK_BODY_POS *bodyPos){
     IK_LEG_REQ ans;
 
-    float cosB = SpeedTrig.cos(bodyPos->rotX);
-    float sinB = SpeedTrig.sin(bodyPos->rotX);
-    float cosG = SpeedTrig.cos(bodyPos->rotY);
-    float sinG = SpeedTrig.sin(bodyPos->rotY);
     float cosA = SpeedTrig.cos(bodyPos->rotZ + Zrot);
     float sinA = SpeedTrig.sin(bodyPos->rotZ + Zrot);
 
     int totalX = X + Xdisp + bodyPos->posX;
     int totalY = Y + Ydisp + bodyPos->posY;
 
-    ans.x = totalX - int(totalX*cosG*cosA + totalY*sinB*sinG*cosA + Z*cosB*sinG*cosA - totalY*cosB*sinA + Z*sinB*sinA) + bodyPos->posX;
-    ans.y = totalY - int(totalX*cosG*sinA + totalY*sinB*sinG*sinA + Z*cosB*sinG*sinA + totalY*cosB*cosA - Z*sinB*cosA) + bodyPos->posY;
-    ans.z = Z - int(-totalX*sinG + totalY*sinB*cosG + Z*cosB*cosG);
+    ans.x = totalX -
+            int(
+                totalX * bodyPos->cosG * cosA +
+                totalY * bodyPos->sinB * bodyPos->sinG * cosA +
+                Z * bodyPos->cosB * bodyPos->sinG * cosA -
+                totalY * bodyPos->cosB * sinA +
+                Z * bodyPos->sinB * sinA
+            ) +
+            bodyPos->posX;
+    ans.y = totalY -
+            int(
+                totalX * bodyPos->cosG * sinA +
+                totalY * bodyPos->sinB * bodyPos->sinG * sinA +
+                Z * bodyPos->cosB * bodyPos->sinG * sinA +
+                totalY * bodyPos->cosB * cosA -
+                Z * bodyPos->sinB * cosA
+            ) +
+            bodyPos->posY;
+    ans.z = Z -
+            int(
+                -totalX * bodyPos->sinG +
+                totalY * bodyPos->sinB * bodyPos->cosG +
+                Z * bodyPos->cosB * bodyPos->cosG
+            );
 
     return ans;
 }
 
 
-/* Simple 3dof leg solver. X,Y,Z are the length from the Coxa rotate to the endpoint. */
+// calc joint rotations, given our foot offset (x,y,z) from the coxa point
 IK_LEG_SOL legIK(int X, int Y, int Z, IK_LEG_DIMS *legDims){
     IK_LEG_SOL ans;
 

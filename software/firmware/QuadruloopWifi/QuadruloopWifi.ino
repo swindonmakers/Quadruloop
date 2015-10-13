@@ -34,9 +34,19 @@ String cmd;  // cmd received over serial - builds up char at a time
 
 COMMAND tempCmd;
 
+IK_BODY_POS bodyPos;
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Quadruloop");
+
+  // setup body
+  bodyPos.rotX = 0;
+  bodyPos.rotY = 0;
+  bodyPos.rotZ = 0;
+  bodyPos.posX = 0;
+  bodyPos.posY = 0;
+  prepBodyIK(&bodyPos);
 
   /* Load config */
   QuadruloopEEPROM::loadConfig(NUM_JOINTS, servoCenters);
