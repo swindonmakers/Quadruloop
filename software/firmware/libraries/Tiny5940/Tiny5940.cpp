@@ -1,37 +1,13 @@
-/*------------------------------------------------------------------------
- The TLC5940 controller
-------------------------------------------------------------------------*/
+#include "Tiny5940.h"
 
-#include <Arduino.h>
-
-#define SIN_PIN D0
-#define SCLK_PIN D1
-#define XLAT_PIN D2
-
-#define NUM_TLCS 2
-#define TLC_CHANNEL_TYPE    uint8_t
-
-/** The maximum angle of the servo. */
-#define SERVO_MAX_ANGLE     180
-/** The 1ms pulse width for zero degrees (0 - 4095). */
-#define SERVO_MIN_WIDTH     60
-/** The 2ms pulse width for 180 degrees (0 - 4095). */
-#define SERVO_MAX_WIDTH     255
-
-#define pulse_pin(pin) digitalWrite(pin, HIGH); digitalWrite(pin, LOW);
-
-class Tiny5940 {
-uint8_t tlc_GSData[NUM_TLCS * 24];
-
-public:
-void init()
+void Tiny5940::init()
 {
   pinMode(XLAT_PIN, OUTPUT);
   digitalWrite(XLAT_PIN, HIGH);
   tlc_shift8_init();
 }
 
-void set(TLC_CHANNEL_TYPE channel, uint16_t value)
+void Tiny5940::set(TLC_CHANNEL_TYPE channel, uint16_t value)
 {
     TLC_CHANNEL_TYPE index8 = (NUM_TLCS * 16 - 1) - channel;
     uint8_t *index12p = tlc_GSData + ((((uint16_t)index8) * 3) >> 1);
@@ -48,7 +24,7 @@ void set(TLC_CHANNEL_TYPE channel, uint16_t value)
     }
 }
 
-void setAll(uint16_t value)
+void Tiny5940::setAll(uint16_t value)
 {
     uint8_t firstByte = value >> 4;
     uint8_t secondByte = (value << 4) | (value >> 8);
@@ -60,12 +36,12 @@ void setAll(uint16_t value)
     }
 }
  
-void setServo(byte channel, uint8_t angle)
+void Tiny5940::setServo(byte channel, uint8_t angle)
 {
     set(channel, angleToVal(angle));
 }
 
-void setAllServo(uint8_t angle)
+void Tiny5940::setAllServo(uint8_t angle)
 {
   setAll(angleToVal(angle));
 }
@@ -75,9 +51,7 @@ void setAllServo(uint8_t angle)
  * Takes approx 750us
  */
 
- long lastUpdate = 0;
- #define UPDATE_RATE_LIMIT 25
-bool update() 
+bool Tiny5940::update()
 {
   // Limit update rate of servos or we end up latching in new
   // values before the old values are set
@@ -104,17 +78,16 @@ bool update()
 }
 
 
-private:
 /** Converts and angle (0 - SERVO_MAX_ANGLE) to the inverted tlc channel value
     (4095 - 0). */
-uint16_t angleToVal(uint8_t angle)
+uint16_t Tiny5940::angleToVal(uint8_t angle)
 {
     return 4095 - SERVO_MIN_WIDTH - (
             ((uint16_t)(angle) * (uint16_t)(SERVO_MAX_WIDTH - SERVO_MIN_WIDTH))
             / SERVO_MAX_ANGLE);
 }
 
-void tlc_shift8_init(void)
+void Tiny5940::tlc_shift8_init(void)
 {
   pinMode(SIN_PIN, OUTPUT);
   pinMode(SCLK_PIN, OUTPUT);
@@ -122,7 +95,7 @@ void tlc_shift8_init(void)
 }
 
 /** Shifts a byte out, MSB first */
-void tlc_shift8(uint8_t byte)
+void Tiny5940::tlc_shift8(uint8_t byte)
 {
     for (uint8_t bit = 0x80; bit; bit >>= 1) {
         if (bit & byte) {
@@ -135,4 +108,3 @@ void tlc_shift8(uint8_t byte)
         pulse_pin(SCLK_PIN);
     }
 }
-};

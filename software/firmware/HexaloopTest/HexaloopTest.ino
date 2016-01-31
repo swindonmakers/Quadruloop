@@ -1,4 +1,9 @@
-#include "Tiny5940.cpp"
+/* 
+ * Tests the basic function of the Hexaloop using the TLC5940 servo driver. 
+ * Tests get more and more aggressive on power.
+ */
+
+#include <Tiny5940.h>
 
 #define SERVO_CHANNEL_MIN   0
 #define SERVO_CHANNEL_MAX   17
