@@ -19,6 +19,9 @@ String cmd;  // cmd received over serial - builds up char at a time
 
 COMMAND tempCmd;
 
+static void parseCommand(String c);
+static void doCommand(COMMAND *c);
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Quadruloop");
