@@ -1,14 +1,14 @@
-#include <Wire.h>
-#include <Adafruit_PWMServoDriver.h>
 #include <SimpleBezier.h>
-#include <ServoAnimatorI2C.h>
+#include <ServoAnimator.h>
+#include <AdafruitServoController.h>
 #include <EEPROM.h>
 #include <QuadruloopEEPROM.h>
 #include <CommandQueue.h>
 #include "Config.h"
 #include "Animations.h"
 
-ServoAnimatorI2C anim(NUM_JOINTS);
+AdafruitServoController servoController;
+ServoAnimator anim(NUM_JOINTS);
 CommandQueue cmdQ(COMMAND_QUEUE_LENGTH);
 
 uint8_t mode = MODE_INTERACTIVE;
@@ -28,7 +28,8 @@ void setup() {
 
   QuadruloopEEPROM::loadConfig(NUM_JOINTS, servoCenters);
 
-  anim.begin(4,5);
+  servoController.init(4, 5);
+  anim.begin(servoController);
 
   // init servos
   for (uint8_t i=0; i<NUM_JOINTS; i++) {
