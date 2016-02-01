@@ -3,37 +3,49 @@
 #define COMMAND_QUEUE_LENGTH 8
 
 /*
-Servo wiring - TODO fix this
+Servo wiring - Back is at the usb port of the NodeMCU
 
-0 - front left hip
-1 - front left coxa
-2 - front left tibia
+0 - back left hip
+1 - back left coxa
+2 - back left tibia
 
-4 - back left hip
-5 - back left coxa
-6 - back left tibia
+3 - back right hip
+4 - back right coxa
+5 - back right tibia
 
-8 - front right hip
-9 - front right coxa
-10 - front right tibia
+6 - mid left hip
+7 - mid left coxa
+8 - mid left tibia
 
-12 - back right hip
-13 - back right coxa
-14 - back right tibia
+9 - mid right hip
+10 - mid right coxa
+11 - mid right tibia
+
+12 - front left hip
+13 - front left coxa
+14 - front left tibia
+
+15 - front right hip
+16 - front right coxa
+17 - front right tibia
+
 
 */
 uint8_t servoNumbers[NUM_JOINTS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
 
 // default centers - will be overwritten from EEPROM once calibrated
 uint8_t servoCenters[NUM_JOINTS] = {90,90,90, 90,90,90, 90,90,90, 90,90,90, 90,90,90, 90,90,90};
+// RL calibration: 96,93,100,96,82,83,75,85,88,83,90,90,107,88,70,90,115,97,
 
 // Positive joint directions should be:
-// Hip - turns towards side of body
+// Hip - turns towards front
 // Coxa - turns towards the ground
 // Femur - turns towards the ground
 boolean servoReverse[NUM_JOINTS] = {
-  true, true, false, 
-  false, false, true, 
+  true, false, true, 
+  false, true, false, 
+  true, false, true, 
+  false, true, false,
   true, true, false, 
   false, false, true
 };
@@ -46,7 +58,7 @@ boolean servoReverse[NUM_JOINTS] = {
 #define CMD_LG 2
 #define CMD_CA 3
 
-#define MAX_ANIM_CMD CMD_LG+1 // First command that isn't tied to an animation
+#define MAX_ANIM_CMD CMD_CA+1 // First command that isn't tied to an animation
 
 #define CMD_POS 21 // set position of servo x to y (relative to center)
 
