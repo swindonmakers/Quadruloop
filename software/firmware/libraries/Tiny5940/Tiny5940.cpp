@@ -1,10 +1,14 @@
 #include "Tiny5940.h"
 
-void Tiny5940::init()
+void Tiny5940::init(uint8_t pinSIN, uint8_t pinSCLK, uint8_t pinXLAT)
 {
-  pinMode(XLAT_PIN, OUTPUT);
-  digitalWrite(XLAT_PIN, HIGH);
-  tlc_shift8_init();
+	_pinSIN = pinSIN;
+	_pinSCLK = pinSCLK;
+	_pinXLAT = pinXLAT;
+
+	pinMode(_pinXLAT, OUTPUT);
+	digitalWrite(_pinXLAT, HIGH);
+	tlc_shift8_init();
 }
 
 void Tiny5940::set(TLC_CHANNEL_TYPE channel, uint16_t value)
@@ -59,18 +63,18 @@ bool Tiny5940::update()
     return false;
 
   // Clock out data
-  pulse_pin(SCLK_PIN);
+  pulse_pin(_pinSCLK);
   uint8_t *p = tlc_GSData;
   while (p < tlc_GSData + NUM_TLCS * 24) {
     tlc_shift8(*p++);
   }
-  pulse_pin(SCLK_PIN);
+  pulse_pin(_pinSCLK);
     
   // Pulse XLAT low to tell Attiny that it should
   // pulse XLAT at the end of the GSCLK cycle
-  digitalWrite(XLAT_PIN, LOW);
+  digitalWrite(_pinXLAT, LOW);
   delayMicroseconds(10); // small delay because ESP runs quicker than ATTiny
-  digitalWrite(XLAT_PIN, HIGH);
+  digitalWrite(_pinXLAT, HIGH);
 
   lastUpdate = millis();
 
@@ -89,9 +93,9 @@ uint16_t Tiny5940::angleToVal(uint8_t angle)
 
 void Tiny5940::tlc_shift8_init(void)
 {
-  pinMode(SIN_PIN, OUTPUT);
-  pinMode(SCLK_PIN, OUTPUT);
-  digitalWrite(SCLK_PIN, LOW);
+	pinMode(_pinSIN, OUTPUT);
+	pinMode(_pinSCLK, OUTPUT);
+	digitalWrite(_pinSCLK, LOW);
 }
 
 /** Shifts a byte out, MSB first */
@@ -99,12 +103,11 @@ void Tiny5940::tlc_shift8(uint8_t byte)
 {
     for (uint8_t bit = 0x80; bit; bit >>= 1) {
         if (bit & byte) {
-          digitalWrite(SIN_PIN, HIGH);
+			digitalWrite(_pinSIN, HIGH);
         } else {
-          
-          digitalWrite(SIN_PIN, LOW);
+			digitalWrite(_pinSIN, LOW);
         }
         
-        pulse_pin(SCLK_PIN);
+		pulse_pin(_pinSCLK);
     }
 }

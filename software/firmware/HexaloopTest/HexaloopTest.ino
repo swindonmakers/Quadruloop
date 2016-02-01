@@ -19,7 +19,7 @@ void setup() {
   
   // put your setup code here, to run once:
   Serial.println("init");
-  tlc.init();
+  tlc.init(D0, D1, D2);
   centerAll();
   delay(2000);
 }
