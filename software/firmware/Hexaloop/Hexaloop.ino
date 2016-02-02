@@ -71,10 +71,12 @@ void doCommand(COMMAND *c)
     // Handle all the other commands that can't be dealt with by the "auto" process
     switch(c->cmdType) {
         case CMD_POS:
+        case CMD_PRE:
             if (f1 >= 0 && f1 <= NUM_JOINTS-1) {
                 interactiveKeyFrames[0][(uint8_t)f1] = (int)f2;
             }
-            updateInteractivePositions();
+            if (c-> cmdType == CMD_POS)
+              updateInteractivePositions();
             break;
         case CMD_SV:
             QuadruloopEEPROM::saveConfig(NUM_JOINTS, servoCenters);
@@ -93,6 +95,12 @@ void doCommand(COMMAND *c)
               updateInteractivePositions();
               //anim.setAnimation(stand);
             }
+            break;
+        case CMD_IA:
+            // copy existing postition into interactive
+            for (uint8_t i=0; i<NUM_JOINTS; i++)
+              interactiveKeyFrames[0][i] = anim.getServoPos(i, true);
+            updateInteractivePositions();
             break;
     }
 }
@@ -121,6 +129,10 @@ void parseCommand(String c) {
         cmdType = CMD_SC;
     } else if (c.startsWith("POS")) {
         cmdType = CMD_POS;
+    } else if (c.startsWith("PRE")) {
+        cmdType = CMD_PRE;
+    } else if (c.startsWith("IA")) {
+        cmdType = CMD_IA;
     }
 
     // give up if command not recognised

@@ -40,6 +40,21 @@ ANIMATION stand {
   new unsigned long[1]{1000}
 };
 
+ANIMATION sit {
+  "SI",
+  CMD_SI,
+  1,
+  (int *)new int[1][NUM_JOINTS] {
+    {-25,-40,-35,
+     -25,-40,-35, 
+     0,-40,-35, 
+     0,-40,-35,
+     25,-40,-35,
+     25,-40,-35}
+  },
+  new unsigned long[1]{1000}
+};
+
 ANIMATION wheel {
   "WH",
   CMD_WH,
@@ -79,4 +94,4 @@ ANIMATION legTest {
 };
 
 
-ANIMATION anims[MAX_ANIM_CMD] = { stand, wheel, legTest, centerAll };
+ANIMATION anims[MAX_ANIM_CMD] = { stand, wheel, legTest, centerAll, sit };

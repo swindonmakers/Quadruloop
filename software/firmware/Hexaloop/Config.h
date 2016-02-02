@@ -57,11 +57,13 @@ boolean servoReverse[NUM_JOINTS] = {
 #define CMD_WH 1
 #define CMD_LG 2
 #define CMD_CA 3
+#define CMD_SI 4
 
-#define MAX_ANIM_CMD CMD_CA+1 // First command that isn't tied to an animation
+#define MAX_ANIM_CMD CMD_SI+1 // First command that isn't tied to an animation
 
+#define CMD_PRE 20 // set position of servo x to y (relative to center) but dont move to it yet
 #define CMD_POS 21 // set position of servo x to y (relative to center)
-
+#define CMD_IA 22 // make the current stance the interactive stance.  So (eg) send ST, IA, then use POS commands to tweak the ST)
 #define CMD_SV 23  // save config
 #define CMD_SC 24 // servo center - set servo x center to y (abs)
 #define CMD_PF 25 // pause for x seconds
