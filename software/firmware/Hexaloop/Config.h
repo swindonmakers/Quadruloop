@@ -59,8 +59,9 @@ boolean servoReverse[NUM_JOINTS] = {
 #define CMD_CA 3
 #define CMD_SI 4
 #define CMD_FD 5
+#define CMD_FE 6
 
-#define MAX_ANIM_CMD CMD_FD+1 // First command that isn't tied to an animation
+#define MAX_ANIM_CMD CMD_FE+1 // First command that isn't tied to an animation
 
 #define CMD_PRE 20 // set position of servo x to y (relative to center) but dont move to it yet
 #define CMD_POS 21 // set position of servo x to y (relative to center)

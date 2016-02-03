@@ -55,6 +55,17 @@ ANIMATION sit {
   new unsigned long[1]{1000}
 };
 
+ANIMATION feelers {
+  "FE",
+  CMD_FE,
+  2,
+  (int *)new int[2][NUM_JOINTS] {
+    {-25,0,-35, -25,0,-35, 40,0,-35, 40,0,-35,  25,0,-35,  25,0,-35},
+    {-25,0,-35, -25,0,-35, 30,0,-35, 30,0,-35,  25,-45,-60,  25,-45,-60}
+  },
+  new unsigned long[2]{1000, 1000}
+};
+
 ANIMATION wheel {
   "WH",
   CMD_WH,
@@ -130,4 +141,5 @@ ANIMATION legTest {
 };
 
 
-ANIMATION anims[MAX_ANIM_CMD] = { stand, wheel, legTest, centerAll, sit, walkForward };
+
+ANIMATION anims[MAX_ANIM_CMD] = { stand, wheel, legTest, centerAll, sit, walkForward, feelers };
