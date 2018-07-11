@@ -1,11 +1,26 @@
 #include "Config.h"
 
+#include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
+#include <ESP8266WebServer.h>
+#include <ESP8266HTTPUpdateServer.h>
+
+#include "RemoteDebug.h"
+
 #include <ServoAnimator.h>
 #include <TLC5940ServoController.h>
 #include <QuadruloopEEPROM.h>
 #include <CommandQueue.h>
 
 #include "Animations.h"
+
+ESP8266WebServer server(80);
+ESP8266HTTPUpdateServer httpUpdater;
+const char* update_path = "/firmware";
+const char* update_username = "admin";
+const char* update_password = "hexaloop";
+
+RemoteDebug Debug;
 
 TLC5940ServoController servoController;
 ServoAnimator anim(NUM_JOINTS);
@@ -29,6 +44,21 @@ void setup() {
 
   anim.setAnimation(centerAll);
   //anim.setAnimation(legTest);
+
+  WiFi.softAP(WIFI_SSID, WIFI_PASS);
+
+  httpUpdater.setup(&server, update_path, update_username, update_password);
+  server.on("/", []() { server.send(200, "text/plain", "Hexaloop 0.1"); } );
+  server.onNotFound( []() { server.send ( 404, "text/plain", "page not found" ); } );
+  server.begin();
+
+  Debug.begin("hexaloop");  
+  String rdbCmds = "\n";
+  //rdbCmds.concat("set offset <n>\n");
+  Debug.setResetCmdEnabled(true);
+  Debug.setHelpProjectsCmds(rdbCmds);
+  Debug.setCallBackProjectCmds(&processRemoteDebugCmd);
+
 }
 
 void updateInteractivePositions() {
@@ -102,6 +132,10 @@ void doCommand(COMMAND *c)
               interactiveKeyFrames[0][i] = anim.getServoPos(i, true);
             updateInteractivePositions();
             break;
+        case CMD_BK:
+            anim.setAnimation(walkForward, true);
+            anim.setRepeatCount(f1);
+            break;
     }
 }
 
@@ -133,6 +167,8 @@ void parseCommand(String c) {
         cmdType = CMD_PRE;
     } else if (c.startsWith("IA")) {
         cmdType = CMD_IA;
+    } else if (c.startsWith("BK")) {
+        cmdType = CMD_BK;
     }
 
     // give up if command not recognised
@@ -155,8 +191,20 @@ void parseCommand(String c) {
     }
 }
 
+void processRemoteDebugCmd() {
+	String str = Debug.getLastCommand();
+    if (cmdQ.isFull()) {
+      DEBUG("BUSY");
+    } else {
+      parseCommand(str);
+      DEBUG("OK:%s\n", str.c_str());
+    }
+}
+
 void loop() {
   anim.update();
+  server.handleClient();
+  Debug.handle();
 
   // Parse commands from Serial
   if (Serial.available()) {

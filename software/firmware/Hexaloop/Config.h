@@ -71,8 +71,13 @@ boolean servoReverse[NUM_JOINTS] = {
 #define CMD_SC 24 // servo center - set servo x center to y (abs)
 #define CMD_PF 25 // pause for x seconds
 #define CMD_CP 26 // copy current position into interactive animation keyframe
+#define CMD_BK 27 // Back (reverse FD)
 
 
 // Modes
 #define MODE_INTERACTIVE 0
 #define MODE_TEST 1  // loop through test movements
+
+
+#define WIFI_SSID "HEXALOOP"
+#define WIFI_PASS "HEXALOOP"
