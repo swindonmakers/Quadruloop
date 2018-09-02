@@ -26,7 +26,7 @@ namespace QuadruloopEEPROM
 
 	void saveConfig(uint8_t n, uint8_t centers[])
 	{
-#if defined(ESP8266_PERI_H_INCLUDED)
+#if defined(ESP8266_PERI_H_INCLUDED) || defined(ARDUINO_ARCH_ESP32)
 		// update magic
 		EEPROM.write(EEPROM_MAGIC_ADDR, EEPROM_MAGIC);
 

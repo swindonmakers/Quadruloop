@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
-#include "ServoController.h"
+#include <ServoController.h>
 
 class AdafruitServoController : public ServoController {
 

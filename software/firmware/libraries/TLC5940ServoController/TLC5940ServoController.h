@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <Tiny5940.h>
-#include "ServoController.h"
+#include <ServoController.h>
 
 class TLC5940ServoController : public ServoController {
 
